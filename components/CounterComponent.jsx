@@ -1,36 +1,50 @@
-import React, { useState } from 'react';
+import React, { Component } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 
-const CounterComponent = ({ name, onChange}) => {
-  const [counter, setCounter] = useState(0);
+class CounterComponent extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      counter: 0,
+    };
+  }
 
-  const handleIncrement = () => {
-    setCounter(counter + 1);
-    onChange(1)
+  handleIncrement = () => {
+    this.setState(prevState => ({
+      counter: prevState.counter + 1,
+    }));
+    this.props.onChange(1);
   };
 
-  const handleDecrement = () => {
-    setCounter(counter - 1);
-    onChange(-1)
+  handleDecrement = () => {
+    this.setState(prevState => ({
+      counter: prevState.counter - 1,
+    }));
+    this.props.onChange(-1);
   };
 
-  return (
-    <View style={styles.counterContainer}>
-      <View style={styles.box}>
-        <Text style={styles.boxTitle}>Counter {name}</Text>
-        <View style={styles.buttonContainer}>
-          <TouchableOpacity onPress={handleDecrement}>
-            <Text style={styles.button}>-</Text>
-          </TouchableOpacity>
-          <Text style={styles.counterValue}>{counter}</Text>
-          <TouchableOpacity onPress={handleIncrement}>
-            <Text style={styles.button}>+</Text>
-          </TouchableOpacity>
+  render() {
+    const { name } = this.props;
+    const { counter } = this.state;
+
+    return (
+      <View style={styles.counterContainer}>
+        <View style={styles.box}>
+          <Text style={styles.boxTitle}>Counter {name}</Text>
+          <View style={styles.buttonContainer}>
+            <TouchableOpacity onPress={this.handleDecrement}>
+              <Text style={styles.button}>-</Text>
+            </TouchableOpacity>
+            <Text style={styles.counterValue}>{counter}</Text>
+            <TouchableOpacity onPress={this.handleIncrement}>
+              <Text style={styles.button}>+</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
-    </View>
-  );
-};
+    );
+  }
+}
 
 const styles = StyleSheet.create({
   counterContainer: {
